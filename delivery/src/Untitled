@@ -1,0 +1,17 @@
+import z from "zod";
+
+// Bir şema ve veri alıp verinin şemaya uygunluluğunu kontrol eden fonksiyon
+export async function validateDTO<T>(
+  schema: z.ZodSchema<T>,
+  data: unknown
+): Promise<T> {
+  try {
+    return schema.parse(data);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      throw new Error(z.prettifyError(error));
+    }
+
+    throw error;
+  }
+}
